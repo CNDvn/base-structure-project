@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  mongodb:
+    container_name: gs-data-mongo
+    image: mongo:6
+    volumes:
+      - /data-mongo:/data/db
+    ports:
+      - 2206:27017
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE
+  api:
+    container_name: gobase
+    image: greatsundev/gobase:latest
+    depends_on:
+      - mongodb
+    ports:
+      - $API_PORT:$API_PORT
+    env_file:
+      - .env
+    restart: unless-stopped
