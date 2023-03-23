@@ -25,6 +25,8 @@
 6. **utils** chứa các function xử lý được dùng nhiều nơi và nhiều lần được gọi trong project
 7. **middlewares** định nghĩa các luồng để routes quản lý điều hướng
 
+---
+
 ## III. Lưu ý
 
 - Để tránh import cycle hay cycle dependency thì package utils không được dùng các function ở trong các model. Mà hãy viết trực tiếp. Cần data từ database thì query trực tiếp.
