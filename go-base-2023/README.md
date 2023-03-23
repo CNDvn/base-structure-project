@@ -1,4 +1,4 @@
-##I. Các thành phần chính trong project
+## I. Các thành phần chính trong project
 
 1. **Routes**: quản lý luồng đi giữa các middleware
 2. **Controller**: điều hướng để xử lý request và và trả về kết quả, tương tác nhiều với các thành phần trong project như Service, Dto,...
@@ -11,7 +11,7 @@
 
 ---
 
-##II. Ý nghĩa Cấu trúc Project
+## II. Ý nghĩa Cấu trúc Project
 
 1. **auth** chứa các vấn đề liên quan đến xử lý xác thực trước khi Request tới **Controller**
 2. **helpers** giống **utils** nhưng được sài ít hơn trong dự án thường chỉ gọi 1 lần, thường dùng để viết các function xử lý tạo instance kêt nối tới các bên thứ 3
@@ -25,7 +25,7 @@
 6. **utils** chứa các function xử lý được dùng nhiều nơi và nhiều lần được gọi trong project
 7. **middlewares** định nghĩa các luồng để routes quản lý điều hướng
 
-##. Lưu ý
+## III. Lưu ý
 
 - Để tránh import cycle hay cycle dependency thì package utils không được dùng các function ở trong các model. Mà hãy viết trực tiếp. Cần data từ database thì query trực tiếp.
   - [resolve import cycle](https://jogendra.dev/import-cycles-in-golang-and-how-to-deal-with-them)
