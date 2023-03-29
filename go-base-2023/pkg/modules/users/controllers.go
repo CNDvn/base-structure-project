@@ -36,14 +36,11 @@ func (UsersController) FindUserByEmail(ctx *gin.Context) {
 	email := ctx.Request.URL.Query().Get("email")
 
 	if user, err := usersService.FindUserByEmail(email); err != nil {
-		utils.CustomError{
-			Status:  http.StatusBadRequest,
-			Message: err.Error(),
-		}.Send(ctx)
+		err.Send(ctx)
 		return
 	} else {
 		userDto := userdto.UserInfo{}
-		userDto.MapFrom(user)
+		userDto.MapFrom(*user)
 
 		utils.CustomResponse{
 			Status:   http.StatusOK,
