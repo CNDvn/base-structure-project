@@ -30,7 +30,7 @@ func (AuthService) SignUp(idToken string) (*models.User, *utils.CustomError) {
 	name := tokenVerified.Claims["name"].(string)
 	role := string(utils.ROLE_USER)
 
-	user := models.User{
+	user := &models.User{
 		UID:   uid,
 		Email: email,
 		Name:  name,
@@ -39,7 +39,7 @@ func (AuthService) SignUp(idToken string) (*models.User, *utils.CustomError) {
 	if err := usersService.CreateUser(user); err != nil {
 		return nil, err
 	} else {
-		return &user, nil
+		return user, nil
 	}
 
 }
