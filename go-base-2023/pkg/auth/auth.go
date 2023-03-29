@@ -34,11 +34,9 @@ func Auth(ctx *gin.Context) {
 	}
 
 	email := token.Claims["email"].(string)
-	user, err := usersService.FindUserByEmail(email)
-	if err != nil {
-		utils.CustomError{
-			Status:  http.StatusUnauthorized,
-			Message: err.Error()}.Send(ctx)
+	user, errFind := usersService.FindUserByEmail(email)
+	if errFind != nil {
+		errFind.Send(ctx)
 		return
 	}
 	ctx.Request.Header.Add(string(utils.HEADER_USER_EMAIL), email)
@@ -52,10 +50,7 @@ func SignUp(ctx *gin.Context) {
 	idToken := ctx.GetHeader(string(utils.HEADER_AUTHORIZATION))
 
 	if user, err := authService.SignUp(idToken); err != nil {
-		utils.CustomError{
-			Status:  http.StatusBadRequest,
-			Message: err.Error(),
-		}.Send(ctx)
+		err.Send(ctx)
 	} else {
 		userDto := userdto.UserInfo{}
 		userDto.MapFrom(*user)

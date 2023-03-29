@@ -4,18 +4,25 @@ import (
 	"basego/pkg/models"
 	"basego/pkg/utils"
 	"context"
+	"net/http"
 )
 
 type AuthService struct{}
 
-func (AuthService) SignUp(idToken string) (*models.User, error) {
+func (AuthService) SignUp(idToken string) (*models.User, *utils.CustomError) {
 	client, err := utils.FirebaseApp.Auth(context.Background())
 	if err != nil {
-		return nil, err
+		return nil, &utils.CustomError{
+			Status:  http.StatusInternalServerError,
+			Message: "Firebase Auth fail",
+		}
 	}
 	tokenVerified, err := client.VerifyIDToken(context.Background(), idToken)
 	if err != nil {
-		return nil, err
+		return nil, &utils.CustomError{
+			Status:  http.StatusBadRequest,
+			Message: "Verify token fail",
+		}
 	}
 
 	uid := tokenVerified.Claims["user_id"].(string)
@@ -29,7 +36,7 @@ func (AuthService) SignUp(idToken string) (*models.User, error) {
 		Name:  name,
 		Role:  role,
 	}
-	if _, err := usersService.CreateUser(user); err != nil {
+	if err := usersService.CreateUser(user); err != nil {
 		return nil, err
 	} else {
 		return &user, nil
